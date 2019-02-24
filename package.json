@@ -1,10 +1,16 @@
 {
-  "name": "mongo-repo-type",
+  "name": "mongo-nest",
   "version": "0.0.1",
   "description": "",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "build": "rd /s /q  dist && tsc -p tsconfig.json",
     "prepare": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yantrab/mongo-nest.git"
   },
   "author": "",
   "license": "ISC",
