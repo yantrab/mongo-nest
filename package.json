@@ -2,15 +2,22 @@
   "name": "mongo-repo-type",
   "version": "0.0.1",
   "description": "",
-  "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rd /s /q  dist && tsc -p tsconfig.json",
+    "prepare": "npm run build"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@nestjs/common": "^5.7.3",
-    "mongodb": "^3.1.13",
-    "nestjs": "0.0.1"
+  },
+  "devDependencies": {
+    "@nestjs/common": "^5.1.0",
+    "@nestjs/core": "^5.1.0",
+    "@types/node": "^7.0.41",
+    "reflect-metadata": "0.1.12",
+    "rxjs": "^6.0.0",
+    "typeorm": "^0.2.7",
+    "typescript": "^3.3.3333",
+    "mongodb": "^3.1.13"
   }
 }
