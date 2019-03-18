@@ -3,7 +3,7 @@
   "version": "0.0.4",
   "description": "",
   "main": "dist/index.js",
-  "types" : "dist/index.d.ts",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "rd /s /q  dist && tsc -p tsconfig.json",
     "prepare": "npm run build"
@@ -24,6 +24,7 @@
     "rxjs": "^6.0.0",
     "typeorm": "^0.2.7",
     "typescript": "^3.3.3333",
+    "@types/mongodb": "^3.1.22",
     "mongodb": "^3.1.13"
   }
 }
