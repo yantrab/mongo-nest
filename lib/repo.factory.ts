@@ -7,7 +7,7 @@ import { Repository } from "./repo";
 export class RepositoryFactory {
     constructor(@Inject('MONGO_CONNECTION') private connection: MongoClient) { }
 
-    getRepository<T extends Entity>(entity: { new(): T; }, db: string) {
+    getRepository<T extends Entity>(entity: Function & { prototype: T }, db: string) {
         return new Repository(this.connection.db(db).collection<Partial<T>>(entity.name));
     }
 }
