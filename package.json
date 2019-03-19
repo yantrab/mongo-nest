@@ -1,19 +1,17 @@
 {
   "name": "mongo-nest",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "scripts": {
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yantrab/mongo-nest.git"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@nestjs/common": "^5.1.0",
     "@nestjs/core": "^5.1.0",
