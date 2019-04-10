@@ -13,7 +13,7 @@ export class Repository<T extends Entity> {
         if (entities.length < 1000) {
             const bulkOperation = this.collection.initializeUnorderedBulkOp();
             for (const item of entities) {
-                bulkOperation.find({ _id: (item as T)._id }).upsert().update(item);
+                bulkOperation.find({ _id: (item as T)._id }).upsert().update({ $set: item });
             }
             return bulkOperation.execute();
         }
