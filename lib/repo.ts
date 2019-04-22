@@ -1,6 +1,12 @@
 import { Entity } from "./entity";
-import { Collection } from 'mongodb';
+import { Collection, Condition, FilterQuery as _FilterQuery } from 'mongodb';
 import { EntityWithoutGetters } from "./EntityWithoutGetters";
+export type FilterQuery<T> = _FilterQuery<T> | Condition2<T>;
+export type Condition2<T> = {
+    $and?: Array<FilterQuery<T> | T>;
+    $or?: Array<FilterQuery<T> | T>;
+    $not?: Array<FilterQuery<T> | T> | T;
+};
 
 export class Repository<T extends Entity> {
     constructor(public collection: Collection<Partial<EntityWithoutGetters<T>>>) { }
@@ -21,11 +27,11 @@ export class Repository<T extends Entity> {
         return Promise.all(entities.map(item => this.saveOrUpdateOne(item)));
     }
 
-    findMany(query?: Partial<T>): Promise<T[]> {
+    findMany(query?: FilterQuery<T>): Promise<T[]> {
         return this.collection.find<T>(query || {}).toArray();
     }
 
-    findOne(query?: Partial<T>): Promise<T> {
+    findOne(query?: FilterQuery<T>): Promise<T> {
         return this.collection.findOne<T>(query || {});
     }
 }
