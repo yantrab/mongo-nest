@@ -5,8 +5,8 @@ import { EntityWithoutGetters } from "./EntityWithoutGetters";
 export class Repository<T extends Entity> {
     constructor(public collection: Collection<Partial<EntityWithoutGetters<T>>>) { }
 
-    saveOrUpdateOne(entity: Partial<EntityWithoutGetters<T>>) {
-        return this.collection.updateOne({ _id: (entity as T)._id }, { $set: entity }, { upsert: true });
+    saveOrUpdateOne(query,entity: Partial<EntityWithoutGetters<T>>, ) {
+        return this.collection.updateOne(query || { _id: (entity as T)._id }, { $set: entity }, { upsert: true });
     }
 
     saveOrUpdateMany(entities: Partial<EntityWithoutGetters<T>>[]) {
