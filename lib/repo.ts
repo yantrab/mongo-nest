@@ -19,20 +19,23 @@ export class Repository<T extends IEntity> {
     }
   }
 
-  saveOrUpdateMany(entities: Partial<EntityWithoutGetters<T>>[]) {
+  saveOrUpdateMany(entities) {
     if (entities.length < 1000) {
       const bulkOperation = this.collection.initializeUnorderedBulkOp();
       for (const item of entities) {
-        delete (item as IEntity)._id;
-        bulkOperation
-          .find({ _id: (item as IEntity)._id })
-          .upsert()
-          .update({ $set: item });
+        const id = item._id;
+        delete item._id;
+        if (id) {
+          bulkOperation
+            .find({ _id: new ObjectId(id.toString()) })
+            .update({ $set: item });
+        } else {
+          bulkOperation.insert(item);
+        }
       }
       return bulkOperation.execute();
     }
-
-    return Promise.all(entities.map(item => this.saveOrUpdateOne(item)) as any);
+    return Promise.all(entities.map(item => this.saveOrUpdateOne(item)));
   }
 
   findMany(query?: Partial<T>): Promise<T[]> {

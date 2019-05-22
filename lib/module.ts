@@ -10,7 +10,6 @@ export class MongoRepoModule {
       provide: "MONGO_CONNECTION",
       useFactory: async () =>
         await new MongoClient(url, {
-          useNewUrlParser: true,
           ignoreUndefined: true
         }).connect()
     };
