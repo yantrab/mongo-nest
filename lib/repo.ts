@@ -1,33 +1,38 @@
-import { Entity } from "./entity";
-import { Collection, Condition, FilterQuery as _FilterQuery } from "mongodb";
+import { IEntity } from "./entity";
+import { Collection, ObjectId } from "mongodb";
 import { EntityWithoutGetters } from "./EntityWithoutGetters";
 
-export class Repository<T extends Entity> {
+export class Repository<T extends IEntity> {
   constructor(
     public collection: Collection<Partial<EntityWithoutGetters<T>>>
   ) {}
 
-  saveOrUpdateOne(entity: Partial<EntityWithoutGetters<T>>, query?) {
-    return this.collection.updateOne(
-      query || { _id: (entity as T)._id },
-      { $set: entity },
-      { upsert: true }
-    );
+  saveOrUpdateOne(entity: Partial<EntityWithoutGetters<T>>) {
+    const id: string = (entity as any)._id;
+    if (id) {
+      delete (entity as IEntity)._id;
+      return this.collection.updateOne({ _id: new ObjectId(id) } as any, {
+        $set: entity
+      });
+    } else {
+      return this.collection.insertOne(entity);
+    }
   }
 
   saveOrUpdateMany(entities: Partial<EntityWithoutGetters<T>>[]) {
     if (entities.length < 1000) {
       const bulkOperation = this.collection.initializeUnorderedBulkOp();
       for (const item of entities) {
+        delete (item as IEntity)._id;
         bulkOperation
-          .find({ _id: (item as T)._id })
+          .find({ _id: (item as IEntity)._id })
           .upsert()
           .update({ $set: item });
       }
       return bulkOperation.execute();
     }
 
-    return Promise.all(entities.map(item => this.saveOrUpdateOne(item)));
+    return Promise.all(entities.map(item => this.saveOrUpdateOne(item)) as any);
   }
 
   findMany(query?: Partial<T>): Promise<T[]> {
